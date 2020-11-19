@@ -79,8 +79,7 @@ def results():
     result_json = requests.get(url, params=params).json()
 
     # Uncomment the line below to see the results of the API call!
-    pp.pprint(result_json)
-
+    
     # TODO: Replace the empty variables below with their appropriate values.
     # You'll need to retrieve these from the result_json object above.
   
@@ -105,13 +104,13 @@ def get_min_temp(results):
     """Returns the minimum temp for the given hourly weather objects."""
     # TODO: Fill in this function to return the minimum temperature from the
     # hourly weather data.
-    return results.result_json['main']['temp_min']
+    ['min_temp']
 
 def get_max_temp(results):
     """Returns the maximum temp for the given hourly weather objects."""
     # TODO: Fill in this function to return the maximum temperature from the
     # hourly weather data.
-    return results.result_json['main']['temp_max']
+    return ['temp']
 
 def get_lat_lon(city_name):
     geolocator = Nominatim(user_agent='Weather Application')
@@ -126,9 +125,9 @@ def historical_results():
     """Displays historical weather forecast for a given day."""
     # TODO: Use 'request.args' to retrieve the city & units from the query
     # parameters.
-    city = ''
-    date = '2020-08-26'
-    units = ''
+    city = request.args.get('city')
+    date = request.args.get('date')
+    units = request.args.get('units')
     date_obj = datetime.strptime(date, '%Y-%m-%d')
     date_in_seconds = date_obj.strftime('%s')
 
@@ -137,25 +136,30 @@ def historical_results():
     url = 'http://api.openweathermap.org/data/2.5/onecall/timemachine'
     params = {
         # TODO: Enter query parameters here for the 'appid' (your api key),
+        'appid':API_KEY,
+        'units':units,
+        'lat':latitude,
+        'lon':longitude,
+        'dt':date_in_seconds
         # latitude, longitude, units, & date (in seconds).
         # See the documentation here (scroll down to "Historical weather data"):
         # https://openweathermap.org/api/one-call-api
-        
     }
 
     result_json = requests.get(url, params=params).json()
 
     # Uncomment the line below to see the results of the API call!
     # pp.pprint(result_json)
-
+    
     result_current = result_json['current']
     result_hourly = result_json['hourly']
+
+    pp.pprint(result_json)    
 
     # TODO: Replace the empty variables below with their appropriate values.
     # You'll need to retrieve these from the 'result_current' object above.
     context = {
-        'city': '',
-        'date': date_obj,
+        'city': city,
         'lat': latitude,
         'lon': longitude,
         'units': '',
