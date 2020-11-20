@@ -79,7 +79,7 @@ def results():
     result_json = requests.get(url, params=params).json()
 
     # Uncomment the line below to see the results of the API call!
-    
+    pp.pprint(result_json)
     # TODO: Replace the empty variables below with their appropriate values.
     # You'll need to retrieve these from the result_json object above.
   
@@ -95,6 +95,7 @@ def results():
         'wind_speed': result_json['wind']['speed'],
         'sunrise': datetime.fromtimestamp(1605613261),
         'sunset': datetime.fromtimestamp(1605652233),
+        'units': units,
         'units_letter': get_letter_for_units(units)
     }
 
@@ -104,13 +105,16 @@ def get_min_temp(results):
     """Returns the minimum temp for the given hourly weather objects."""
     # TODO: Fill in this function to return the minimum temperature from the
     # hourly weather data.
-    ['min_temp']
+    low = min(results)
+    return results[low]
 
 def get_max_temp(results):
     """Returns the maximum temp for the given hourly weather objects."""
     # TODO: Fill in this function to return the maximum temperature from the
     # hourly weather data.
-    return ['temp']
+    high = max(results)
+    return results[high]
+
 
 def get_lat_lon(city_name):
     geolocator = Nominatim(user_agent='Weather Application')
@@ -153,23 +157,22 @@ def historical_results():
     
     result_current = result_json['current']
     result_hourly = result_json['hourly']
-
-    pp.pprint(result_json)    
-
+ 
     # TODO: Replace the empty variables below with their appropriate values.
     # You'll need to retrieve these from the 'result_current' object above.
     context = {
         'city': city,
+        'dt': request.args.get('date'),
         'lat': latitude,
         'lon': longitude,
-        'units': '',
-        'units_letter': '', # should be 'C', 'F', or 'K'
-        'description': '',
-        'temp': '',
-        'min_temp': get_min_temp(result_hourly),
-        'max_temp': get_max_temp(result_hourly)
+        'units': units,
+        'units_letter': units, # should be 'C', 'F', or 'K'
+        'description': result_current['weather'][0]['description'],
+        'temp': result_current['temp'],
+        'min_temp': get_min_temp(result_hourly[0]),
+        'max_temp': get_max_temp(result_hourly[0])
     }
-
+    
     return render_template('historical_results.html', **context)
 
 

@@ -7,15 +7,22 @@
         server 
     #}
     <h1>Weather in {{ city }}</h1>
-    <p>on Saturday, August 29, 2020</p>
+    <p>on {{ date }}</p>
     
     {#
         TODO: Add the temperature, description, humidity, wind speed, sunrise,
         & sunset below. Replace 'F' with the appropriate units.
     #}
     <ul>
+        {% if units == 'metric' %}
+        <li>Temperature: {{ temp }} ° C</li>
+        {% elif units == 'imperial' %}
         <li>Temperature: {{ temp }} ° F</li>
-        <li>Description: {{ description}} </li>
+        {% elif units == 'kelvin' %}
+        <li>Temperature: {{ temp }} ° K</li>
+        {% endif %}
+
+        <li>Description: {{ description }} </li>
         <li>Humidity: {{ humidity }} %</li>
         <li>Wind speed: {{ wind_speed }} miles/hour</li>
         <li>Sunrise: {{ sunrise }}</li>

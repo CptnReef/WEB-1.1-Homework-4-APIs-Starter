@@ -7,7 +7,7 @@
         server.
     #}
     <h1>Weather in {{ city }}</h1>
-    <p>on Saturday, August 29, 2020</p>
+    <p>on {{ dt }}</p>
 
 
     {#
@@ -15,10 +15,21 @@
         Replace 'F' with the appropriate units.
     #}
     <ul>
-        <li>Description: </li>
-        <li>Temperature: ° F</li>
-        <li>Min: {{ min_temp }} ° F</li>
-        <li>Max: {{ max_temp }}° F</li>
+        <li>Description: {{ description }} </li>
+        
+        {% if units_letter == 'metric' %}
+        <li>Temperature: {{ temp }} °C</li>
+        <li>Min: {{ min_temp }} °C</li>
+        <li>Max: {{ max_temp }} °C</li>            
+        {% elif units_letter == 'imperial' %}
+        <li>Temperature: {{ temp }} °F</li>
+        <li>Min: {{ min_temp }} °F</li>
+        <li>Max: {{ max_temp }} °F</li>            
+        {% elif units_letter == 'kelvin' %}
+        <li>Temperature: {{ temp }} °K</li>
+        <li>Min: {{ min_temp }} °K</li>
+        <li>Max: {{ max_temp }} °K</li>            
+        {% endif %}
     </ul>
 
 
